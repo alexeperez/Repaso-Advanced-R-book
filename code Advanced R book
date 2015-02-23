@@ -1,0 +1,91 @@
+# Funciones instalar y cargar paquetes:
+
+####   Librerias utilizadas
+#paq <- list("foreign", "ggplot2", "party", "dgof", "kSamples", "gWidgets", "gWidgetstcltk")
+#no.inst <-paq[!(paq %in% .packages(all.available = TRUE))]
+
+#sapply(X=no.inst, FUN=install.packages, dependencies = TRUE)
+
+#sapply(X=paq, FUN=library,character.only = TRUE)
+#sapply(X=paq, FUN=library)
+
+# paquetes instalados
+(.packages(all.available=TRUE))
+a <- library()   
+a <- installed.packages()
+
+# paquetes cargados
+(.packages())
+
+# all(paq %in% (.packages(all.available=TRUE)))
+#ls("package:installr")
+
+# subconju y asignacion
+x <- 1:5
+x[c(1, 2)] <- 2:3
+
+x[-1] <- 4:1
+
+x[c(1, 1)] <- 2:3
+x
+
+x[c(1, NA)] <- c(1, 2)
+
+x[c(T, F, NA)] <- 1
+
+df <- data.frame(a = c(1, 10, NA))
+df$a[df$a < 5] <- 0
+df$a
+
+# [], mantiene la estructura y clase
+mtcars[] <- lapply(mtcars, as.integer)
+mtcars <- lapply(mtcars, as.integer)
+
+x <- c("m", "f", "u", "f", "f", "m", "m")
+y <- c(m = "Male", f = "Female", u = NA)[x]
+unname(y)
+
+
+
+# match and merge
+
+grades <- c(1, 2, 2, 3, 1)
+aux <- data.frame(grade=grades)
+
+info <- data.frame(
+  grade = 3:1,
+  desc = c("Excellent", "Good", "Poor"),
+  fail = c(F, F, T)
+)
+
+id <- match(grades,info$grade)
+info[id,]
+
+merge(x=aux, y=info)
+
+library(plyr)
+join(x=aux,y=info,type="full")
+
+#join mas rapido que merge
+first <- ddply(baseball, "id", summarise, first = min(year))
+system.time(b2 <- merge(baseball, first, by = "id", all.x = TRUE))
+system.time(b3 <- join(baseball, first, by = "id"))
+
+
+
+# programacion funcional
+
+set.seed(1014)
+df <- data.frame(replicate(6, sample(c(1:10, -99), 6, rep = TRUE)))
+names(df) <- letters[1:6]
+
+recod_vacios <- function(x){
+  x[x==-99] <- NA
+  x
+}
+
+df[] <- lapply(df, recod_vacios)
+#df[1:4]  <- lapply(df [1:4], recod_vacios)
+
+
+
